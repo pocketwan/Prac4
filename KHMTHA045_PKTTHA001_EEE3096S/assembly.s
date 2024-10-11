@@ -39,7 +39,16 @@ ASM_Main:
 
 main_loop:
 
+check_sw_2:                   @ Checking SW2
+    LDR R3, [R0, #0x10]       @ Read SW2 input
+    MOVS R4, #0x04            @ Load 0x04 into R4
+    ANDS R4, R4, R3           @ Check if SW2 is pressed
+    BNE check_sw_0            @ If SW2 not pressed, check other switches
 
+    MOVS R2, #0xAA 			  @ Display 0xAA if SW2 pressed
+    STR R2, [R1, #0x14]        @ Write the value of R2 to GPIOB (LEDs)
+    BL delay_long
+    B main_loop
 
 check_sw_0:                   @ Checking SW0
     LDR R3, [R0, #0x10]       @ Read SW0 input
