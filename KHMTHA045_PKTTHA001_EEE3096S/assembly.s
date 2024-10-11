@@ -39,6 +39,16 @@ ASM_Main:
 
 main_loop:
 
+check_sw_3:                   @ Checking SW3
+    LDR R3, [R0, #0x10]       @ Read SW3 input
+    MOVS R4, #0x08            @ Load 0x08 into R4
+    ANDS R4, R4, R3           @ Check if SW2 is pressed
+    BNE check_sw_2            @ If SW3 not pressed, check other switches
+
+    STR R2, [R1, #0x14]        @ Display and freeze the current pattern
+    BL delay_long
+    B main_loop
+
 check_sw_2:                   @ Checking SW2
     LDR R3, [R0, #0x10]       @ Read SW2 input
     MOVS R4, #0x04            @ Load 0x04 into R4
